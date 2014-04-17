@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+  Connect SDK Web App Sampler App by LG Electronics
+
+  To the extent possible under law, the person who associated CC0 with
+  this sample app has waived all copyright and related or neighboring rights
+  to the sample app.
+
+  You should have received a copy of the CC0 legalcode along with this
+  work. If not, see http://creativecommons.org/publicdomain/zero/1.0/.
+-->
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" type="text/css" href="app.css" />
+</head>
+<body>
+    <div id="spacer" style="height: 20px; display: none"><!-- spacer for iOS status bar --></div>
+    <div id="app">
+        
+        <div class="navbar navbar-default">
+            <div class="container-fluid">
+                <button type="button" class="btn btn-default navbar-btn" onclick="app.pickDevice()">Pick a TV</button>
+                <span id="status" class="app-status">Starting app ...</span>
+            </div>
+        </div>
+        
+        <div id="webAppPanel" class="panel panel-default" style="display: none">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label for="webAppIdField">Web App ID:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="webAppIdField" value="MediaPlayer" />
+                        <div class="input-group-btn">
+                            <button class="btn btn-primary" id="launchButton" onclick="app.launchClicked()">Launch</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="session-status" class="alert" style="display: none">
+                    <button type="button" class="close" aria-hidden="true" onclick="app.hideSessionStatus()">&times;</button>
+                    <span id="session-status-text"></span>
+                </div>
+                
+                <div id="session-div" style="display: none">
+                    <div class="input-group">
+                        <input type="text" id="messageTextField" class="form-control" />
+                        <span class="input-group-btn">
+                             <button class="btn btn-primary" onclick="app.sendTextClicked()">Send Text</button>
+                        </span>
+                    </div>
+                    <br />
+                    <div class="input-group">
+                        <input type="text" id="messageJSONField" class="form-control" value="{}" />
+                        <span class="input-group-btn">
+                             <button class="btn btn-primary" onclick="app.sendJSONClicked()">Send JSON</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript">app.initialize();</script>
+</body>
+</html>

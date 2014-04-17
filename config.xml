@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.connectsdk.web-app-sampler-cordova" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Connect-SDK-WebAppSampler-Cordova</name>
+    <description>
+        Example Cordova app to demonstrate Connect SDK launch web app APIs.
+    </description>
+    <author email="connect@lgsvl.com" href="http://www.connectsdk.com">
+        LG Electronics, Inc.
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+</widget>
