@@ -97,9 +97,9 @@ var app = {
         var webAppId = "";
         
         if (this.device.hasService(ConnectSDK.Services.WebOSTV)) {
-            webAppId = "MediaPlayer";
+            webAppId = "SampleWebApp";
         } else if (this.device.hasService(ConnectSDK.Services.Chromecast)) {
-            webAppId = "4F6217BC";
+            webAppId = "DDCEDE96";
         }
         
         $("#webAppIdField").val(webAppId);
