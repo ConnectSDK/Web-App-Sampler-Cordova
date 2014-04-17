@@ -11,7 +11,7 @@ For more information on using Connect SDK, we recommend you review the following
 
 - [Connect SDK Cordova Plugin](http://github.com/ConnectSDK/Connect-SDK-Cordova-Plugin/)
 - [My First Connect SDK App](http://connectsdk.com/docs/cordova/)
-- [API Documentation](http://connectsdk.com/apis/ios/)
+- [API Documentation](http://connectsdk.com/apis/cordova/)
 
 ## License
 Connect SDK Sample App by LG Electronics
