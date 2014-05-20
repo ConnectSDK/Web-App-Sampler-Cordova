@@ -84,13 +84,22 @@ var app = {
             this.deviceReady();
         } else {
             device.on("ready", this.deviceReady, this);
-            device.on("disconnect", this.deviceDisconnect, this);
+            device.on("disconnect", this.deviceDisconnected, this);
             
+            $("#status").text("Connecting ...");
             device.connect();
+        }
+    },
+    
+    disconnectDevice: function () {
+        if (this.device) {
+            this.device.disconnect();
         }
     },
             
     deviceReady: function () {
+        $("#status").text(this.device.getFriendlyName());
+        
         this.device.off("ready"); // remove ready listeners
         
         // Set default web app id based on what kind of TV we're connected to
@@ -105,14 +114,21 @@ var app = {
         $("#webAppIdField").val(webAppId);
         
         $("#webAppPanel").show();
+        $("#pickDeviceButton").hide();
+        $("#disconnectButton").show();
     },
     
-    deviceDisconnect: function () {
+    deviceDisconnected: function () {
         $("#webAppPanel").hide();
         
         this.device.off("ready");
         this.device.off("disconnect");
         this.device = null;
+        
+        $("#pickDeviceButton").show();
+        $("#disconnectButton").hide();
+        
+        $("#status").text("TVs found: " + ConnectSDK.discoveryManager.getDeviceList().length);
     },
     
     launchClicked: function () {
@@ -124,23 +140,44 @@ var app = {
         
         // Launch web app
         this.device.getWebAppLauncher().launchWebApp(webAppId).success(function (webAppSession) {
-            // Get a reference to the web app session
-            // We should remember to release() it later to free up native resources
-            this.session = webAppSession.acquire();
-            
-            // Add listeners
-            this.session.on("message", this.handleMessage, this);
-            this.session.on("disconnect", this.handleSessionDisconnect, this);
-            
-            // Connect to the web app
-            this.session.connect()
-                .success(this.handleSessionConnect, this)
-                .error(this.handleSessionError, this);
+            this.setupWebAppSession(webAppSession);
             
             this.displaySessionStatus("Launched", "alert-info");
         }, this).error(function () {
             this.displaySessionStatus("Error launching web app", "alert-danger");
-        });
+        }, this);
+    },
+    
+    joinClicked: function () {
+        var webAppId = $("#webAppIdField").val();
+        
+        if (this.session) {
+            this.cleanupSession();
+        }
+        
+        // Join web app
+        this.device.getWebAppLauncher().joinWebApp(webAppId).success(function (webAppSession) {
+            this.setupWebAppSession(webAppSession);
+            
+            this.displaySessionStatus("Joined", "alert-info");
+        }, this).error(function (err) {
+            this.displaySessionStatus("Error joining web app: " + err.message, "alert-danger");
+        }, this);
+    },
+    
+    setupWebAppSession: function (webAppSession) {
+        // Get a reference to the web app session
+        // We should remember to release() it later to free up native resources
+        this.session = webAppSession.acquire();
+
+        // Add listeners
+        this.session.on("message", this.handleMessage, this);
+        this.session.on("disconnect", this.handleSessionDisconnect, this);
+
+        // Connect to the web app
+        this.session.connect()
+            .success(this.handleSessionConnect, this)
+            .error(this.handleSessionError, this);
     },
     
     displaySessionStatus: function (message, alertClass) {
@@ -168,6 +205,8 @@ var app = {
     },
     
     handleSessionDisconnect: function () {
+        console && console.log("session disconnected");
+        
         this.displaySessionStatus("Disconnected", "alert-warning");
         this.cleanupSession();
     },
@@ -182,6 +221,7 @@ var app = {
         this.session.off("disconnect");
         
         // Release session to free up memory
+        this.session.disconnect();
         this.session.release();
         this.session = null;
         

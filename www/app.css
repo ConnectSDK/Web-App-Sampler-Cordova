@@ -18,8 +18,22 @@ body {
     margin: 1em 0.5em 1em 0.5em;
 }
 
+.app-nav {
+    display: -webkit-flex;
+    -webkit-flex-direction: row;
+}
+
+.app-nav > .btn {
+    -webkit-flex: none;
+}
+
 .app-status {
     margin-left: 1em;
     font-size: 18px;
+    width: 100%;
     vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-flex: 1;
+    white-space: nowrap;
 }

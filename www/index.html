@@ -20,42 +20,49 @@
     <div id="app">
         
         <div class="navbar navbar-default">
-            <div class="container-fluid">
-                <button type="button" class="btn btn-default navbar-btn" onclick="app.pickDevice()">Pick a TV</button>
-                <span id="status" class="app-status">Starting app ...</span>
+            <div class="container-fluid app-nav">
+                <button id="pickDeviceButton" class="btn btn-default navbar-btn" onclick="app.pickDevice()">Pick a TV</button>
+                <button id="disconnectButton" class="btn btn-danger navbar-btn" style="display: none" onclick="app.disconnectDevice()">Disconnect</button>
+                <span id="status" class="app-status navbar-text">Starting app ...</span>
             </div>
         </div>
         
-        <div id="webAppPanel" class="panel panel-default" style="display: none">
-            <div class="panel-body">
-                <div class="form-group">
-                    <label for="webAppIdField">Web App ID:</label>
-                    <div class="input-group">
-                        <input type="text" class="form-control" id="webAppIdField" value="MediaPlayer" />
-                        <div class="input-group-btn">
-                            <button class="btn btn-primary" id="launchButton" onclick="app.launchClicked()">Launch</button>
+        <div id="webAppPanel" style="display: none">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#launcher" data-toggle="tab">Launcher</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="launcher">
+                    <div class="form-group">
+                        <label for="webAppIdField">Web App ID:</label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="webAppIdField" value="MediaPlayer" />
+                            <div class="input-group-btn">
+                                <button class="btn btn-primary" id="launchButton" onclick="app.launchClicked()">Launch</button>
+                                <button class="btn btn-primary" id="joinButton" onclick="app.joinClicked()">Join</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                
-                <div id="session-status" class="alert" style="display: none">
-                    <button type="button" class="close" aria-hidden="true" onclick="app.hideSessionStatus()">&times;</button>
-                    <span id="session-status-text"></span>
-                </div>
-                
-                <div id="session-div" style="display: none">
-                    <div class="input-group">
-                        <input type="text" id="messageTextField" class="form-control" value="Hello world" />
-                        <span class="input-group-btn">
-                             <button class="btn btn-primary" onclick="app.sendTextClicked()">Send Text</button>
-                        </span>
+
+                    <div id="session-status" class="alert" style="display: none">
+                        <button type="button" class="close" aria-hidden="true" onclick="app.hideSessionStatus()">&times;</button>
+                        <span id="session-status-text"></span>
                     </div>
-                    <br />
-                    <div class="input-group">
-                        <input type="text" id="messageJSONField" class="form-control" value="{}" />
-                        <span class="input-group-btn">
-                             <button class="btn btn-primary" onclick="app.sendJSONClicked()">Send JSON</button>
-                        </span>
+
+                    <div id="session-div" style="display: none">
+                        <div class="input-group">
+                            <input type="text" id="messageTextField" class="form-control" value="Hello world" />
+                            <span class="input-group-btn">
+                                 <button class="btn btn-primary" onclick="app.sendTextClicked()">Send Text</button>
+                            </span>
+                        </div>
+                        <br />
+                        <div class="input-group">
+                            <input type="text" id="messageJSONField" class="form-control" value="{}" />
+                            <span class="input-group-btn">
+                                 <button class="btn btn-primary" onclick="app.sendJSONClicked()">Send JSON</button>
+                            </span>
+                        </div>
                     </div>
                 </div>
             </div>
