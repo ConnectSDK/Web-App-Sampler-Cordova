@@ -80,11 +80,12 @@ var app = {
     },
     
     connectToDevice: function (device) {
+        device.on("disconnect", this.deviceDisconnected, this);
+        
         if (device.isReady()) {
             this.deviceReady();
         } else {
             device.on("ready", this.deviceReady, this);
-            device.on("disconnect", this.deviceDisconnected, this);
             
             $("#status").text("Connecting ...");
             device.connect();
