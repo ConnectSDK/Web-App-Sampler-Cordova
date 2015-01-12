@@ -141,8 +141,19 @@ var app = {
         
         // Launch web app
         this.device.getWebAppLauncher().launchWebApp(webAppId).success(function (webAppSession) {
-            this.setupWebAppSession(webAppSession);
-            
+            // Get a reference to the web app session
+            // We should remember to release() it later to free up native resources
+            this.session = webAppSession.acquire();
+
+            // Add listeners
+            this.session.on("message", this.handleMessage, this);
+            this.session.on("disconnect", this.handleSessionDisconnect, this);
+
+            // Connect to the web app
+            this.session.connect()
+                .success(this.handleSessionConnect, this)
+                .error(this.handleSessionError, this);
+
             this.displaySessionStatus("Launched", "alert-info");
         }, this).error(function () {
             this.displaySessionStatus("Error launching web app", "alert-danger");
@@ -158,9 +169,19 @@ var app = {
         
         // Join web app
         this.device.getWebAppLauncher().joinWebApp(webAppId).success(function (webAppSession) {
-            this.setupWebAppSession(webAppSession);
+            // Get a reference to the web app session
+            // We should remember to release() it later to free up native resources
+            this.session = webAppSession.acquire();
+
+            // Add listeners
+            this.session.on("message", this.handleMessage, this);
+            this.session.on("disconnect", this.handleSessionDisconnect, this);
+
+            $("#session-div").show();
             
             this.displaySessionStatus("Joined", "alert-info");
+
+            this.handleSessionConnect();
         }, this).error(function (err) {
             this.displaySessionStatus("Error joining web app: " + err.message, "alert-danger");
         }, this);
@@ -191,6 +212,8 @@ var app = {
     },
     
     handleSessionConnect: function () {
+        this.session.setWebAppSessionListener(this);
+
         this.displaySessionStatus("Connected", "alert-success");
         $("#session-div").show();
     },
